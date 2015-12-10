@@ -29,16 +29,5 @@ public class DownForDinnerApplication extends Application {
         Parse.setLogLevel(Parse.LOG_LEVEL_VERBOSE);
         //  ParsePush.subscribeInBackground("DownForDinner");
 
-        ParsePush.subscribeInBackground("", new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Log.d("com.parse.push", "successfully subscribed to the broadcast channel.");
-                } else {
-                    Log.e("com.parse.push", "failed to subscribe for push", e);
-                }
-            }
-        });
-
     }
 }
