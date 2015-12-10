@@ -96,8 +96,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (e == null) {
                     Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
 
-                    Intent intentStartMainActivity = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intentStartMainActivity);
+                    Intent intentStartIdleActivity = new Intent(LoginActivity.this, IdleActivity.class);
+                    startActivity(intentStartIdleActivity);
                     finish();
                 } else {
                     Toast.makeText(LoginActivity.this, "Login failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
