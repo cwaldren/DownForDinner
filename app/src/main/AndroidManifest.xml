@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.caseywaldren.downfordinner">
 
-
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -12,9 +10,11 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <permission
-        android:protectionLevel="signature"
-        android:name="com.caseywaldren.downfordinner.permission.C2D_MESSAGE" />
+        android:name="com.caseywaldren.downfordinner.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
     <uses-permission android:name="com.caseywaldren.downfordinner.permission.C2D_MESSAGE" />
+
     <application
         android:name=".DownForDinnerApplication"
         android:allowBackup="true"
@@ -22,9 +22,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
-
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +29,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
 
         <service android:name="com.parse.PushService" />
 
@@ -52,9 +48,7 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-                <!--
-                  IMPORTANT: Change "com.parse.starter" to match your app's package name.
-                -->
+                <!--                   IMPORTANT: Change "com.parse.starter" to match your app's package name. -->
                 <category android:name="com.caseywaldren.downfordinner" />
             </intent-filter>
         </receiver>
@@ -63,8 +57,9 @@
             android:name="com.parse.push.notification_icon"
             android:resource="@mipmap/ic_launcher" />
 
-        <activity android:name=".InitialResponseActivity"></activity>
-        <activity android:name=".IdleActivity"></activity>
+        <activity android:name=".InitialResponseActivity" />
+        <activity android:name=".IdleActivity" />
+        <activity android:name=".WaitActivity"></activity>
     </application>
 
 </manifest>
