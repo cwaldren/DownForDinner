@@ -14,7 +14,7 @@
     <permission
         android:protectionLevel="signature"
         android:name="com.caseywaldren.downfordinner.permission.C2D_MESSAGE" />
-    <uses-permission android:name="com.parse.starter.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.caseywaldren.downfordinner.permission.C2D_MESSAGE" />
     <application
         android:name=".DownForDinnerApplication"
         android:allowBackup="true"
