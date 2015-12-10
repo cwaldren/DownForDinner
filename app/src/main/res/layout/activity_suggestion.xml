@@ -37,4 +37,13 @@
         android:layout_marginTop="50dp"
         android:hint="Enter a time"/>
 
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SUBMIT"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"/>
+
 </RelativeLayout>
