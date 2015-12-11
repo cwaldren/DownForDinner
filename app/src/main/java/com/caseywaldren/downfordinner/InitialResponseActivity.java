@@ -33,6 +33,7 @@ public class InitialResponseActivity extends AppCompatActivity {
     @OnClick(R.id.btnYes)
     public void respondYes() {
         ParseUser.getCurrentUser().put("downForDinner", true);
+        ParseUser.getCurrentUser().saveInBackground();
         ParsePush.subscribeInBackground("DinnerUpdates");
         ParsePush push = new ParsePush();
         String alertText = ParseUser.getCurrentUser().getUsername() + " is down. ";
