@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class InitialResponseActivity extends AppCompatActivity {
@@ -26,6 +27,7 @@ public class InitialResponseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_initial_response);
+        ButterKnife.bind(this);
     }
 
     @OnClick(R.id.btnYes)

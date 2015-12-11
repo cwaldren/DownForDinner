@@ -1,5 +1,6 @@
 package com.caseywaldren.downfordinner;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -90,7 +91,6 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
 
         Intent contentIntent = new Intent(ParsePushBroadcastReceiver.ACTION_PUSH_OPEN);
         contentIntent.putExtras(extras);
-        contentIntent.setClass(context, InitialResponseActivity.class);
         contentIntent.setPackage(packageName);
 
 
@@ -136,6 +136,8 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
             action = pushData.optString("action", null);
         }
         if (action != null) {
+            Log.i("PUSH_REC", "Going to broadcast " + action);
+
             Bundle extras = intent.getExtras();
             Intent broadcastIntent = new Intent();
             broadcastIntent.putExtras(extras);
@@ -146,9 +148,11 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
         Random random = new Random();
 
         if (pushData.optString("alert").contains(ParseUser.getCurrentUser().getUsername())) {
+            Log.i("PUSH_REC", "Got a push sent from myself");
             return;
         }
         if (pushData.optString("title").equals("Dinner Update")) {
+            Log.i("PUSH_REC", "Got a dinner plan update");
 
             NotificationManager mgr = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             mgr.notify(random.nextInt(), getUpdateNotification(context, intent));
@@ -188,5 +192,14 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
         super.onPushDismiss(context, intent);
     }
 
+
+    @Override
+    public Class<? extends Activity> getActivity(Context context, Intent intent) {
+        if (this.getPushData(intent).optString("title").equals("Dinner Request!")) {
+            return InitialResponseActivity.class;
+        } else {
+            return WaitActivity.class;
+        }
+    }
 
 }
