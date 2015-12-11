@@ -1,5 +1,6 @@
 package com.caseywaldren.downfordinner.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +14,14 @@ import android.widget.TextView;
 import com.caseywaldren.downfordinner.R;
 import com.caseywaldren.downfordinner.TimeActivity;
 import com.caseywaldren.downfordinner.data.Choice;
+import com.parse.GetCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
+import com.parse.ParseQuery;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,21 +29,21 @@ import java.util.List;
 /**
  * Created by William on 12/11/2015.
  */
-public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAdapter.ViewHolder>{
+public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAdapter.ViewHolder> {
 
-    public static boolean isRestaurants = true;
-    public static String objectTag;
-    public static String objectCountTag;
-    public static ParseObject status;
+    public boolean isRestaurants = true;
+    public String objectTag;
+    public String objectCountTag;
+    public ParseObject status;
     private List<Choice> choices;
     private Context context;
 
     public ChoiceRecyclerAdapter(Context context, boolean isRestaurants) {
         this.context = context;
         this.isRestaurants = isRestaurants;
-        this.choices  = new ArrayList<Choice>();
+        this.choices = new ArrayList<Choice>();
 
-        if(isRestaurants) {
+        if (isRestaurants) {
             objectTag = "restaurant";
             objectCountTag = "restaurantVotes";
         } else {
@@ -68,23 +76,62 @@ public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAd
         holder.btnVote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int voteCount = choices.get(position).getObject().getInt(objectCountTag) + 1;
-                if(voteCount == status.getInt("threshold")) {
-                    status.put(objectTag,
-                            choices.get(position).getObject().getString(objectTag));
-                    status.saveInBackground();
-                    advanceStateToTime();
-                } else {
-                    choices.get(position).getObject().put(
-                            objectCountTag,
-                            voteCount);
-                    choices.get(position).getObject().saveInBackground();
-                    holder.tvVoted.setVisibility(View.VISIBLE);
-                    holder.btnVote.setVisibility(View.GONE);
-                }
+
+                fetchLatestVoteCountAndAddOneVote(choices.get(position).getObject(), position);
+
+                holder.tvVoted.setVisibility(View.VISIBLE);
+                holder.btnVote.setVisibility(View.GONE);
+
             }
         });
 
+    }
+
+    private void fetchLatestVoteCountAndAddOneVote(final ParseObject object, final int position) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Suggestions");
+        query.getInBackground(object.getObjectId(), new GetCallback<ParseObject>() {
+            public void done(ParseObject newObject, ParseException e) {
+                if (e != null) {
+                    Log.e("PARSE_UPDATE", "Failed to fetch updated vote count before voting");
+                } else {
+                    choices.get(position).setObject(newObject);
+                    int voteCount = newObject.getInt(objectCountTag) + 1;
+                    if (voteCount == status.getInt("threshold")) {
+                        status.put(objectTag,
+                                choices.get(position).getObject().getString(objectTag));
+                        status.saveInBackground();
+                        notifyEveryoneToAdvanceToTime();
+                        advanceStateToTime();
+                    } else {
+                        choices.get(position).getObject().put(objectCountTag, voteCount);
+                        newObject.saveInBackground();
+
+                        ParsePush push = new ParsePush();
+                        try {
+                            JSONObject data = new JSONObject("{\"title\": \"Update Vote Count\", \"alert\":\"Updating vote count\",  \"action\":\"com.caseywaldren.downfordinner.intent.UPDATE_VOTE_COUNT\" }");
+                            push.setChannel("DinnerUpdates");
+                            push.setData(data);
+                            push.sendInBackground();
+                        } catch (JSONException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+
+                }
+            }
+        });
+    }
+
+    private void notifyEveryoneToAdvanceToTime() {
+        ParsePush push = new ParsePush();
+        try {
+            JSONObject data = new JSONObject("{\"title\": \"Choose Time\", \"alert\":\"Its time to choose a time\",  \"action\":\"com.caseywaldren.downfordinner.intent.BEGIN_CHOOSE_TIME\" }");
+            push.setChannel("DinnerUpdates");
+            push.setData(data);
+            push.sendInBackground();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void advanceStateToTime() {
@@ -93,6 +140,7 @@ public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAd
 
         Intent launchTimeChoiceActivity = new Intent(context, TimeActivity.class);
         context.startActivity(launchTimeChoiceActivity);
+        ((Activity) context).finish();
     }
 
     @Override
@@ -103,7 +151,15 @@ public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAd
     public void addInitialChoices(ParseObject status, List<ParseObject> objects) {
         this.status = status;
         choices = new ArrayList<Choice>();
-        for(int i = 0; i < objects.size(); i++) {
+        for (int i = 0; i < objects.size(); i++) {
+            choices.add(new Choice(objects.get(i)));
+        }
+        notifyDataSetChanged();
+    }
+
+    public void updateChoices(List<ParseObject> objects) {
+        choices = new ArrayList<Choice>();
+        for (int i = 0; i < objects.size(); i++) {
             choices.add(new Choice(objects.get(i)));
         }
         notifyDataSetChanged();

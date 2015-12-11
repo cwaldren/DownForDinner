@@ -1,8 +1,8 @@
 package com.caseywaldren.downfordinner;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -63,5 +63,6 @@ public class SuggestionActivity extends AppCompatActivity {
     public void startChoiceActivity() {
         Intent intentStartChoiceActivity = new Intent(SuggestionActivity.this, ChoiceActivity.class);
         startActivity(intentStartChoiceActivity);
+        finish();
     }
 }

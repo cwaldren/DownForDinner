@@ -178,8 +178,8 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
 
         PendingIntent pendingNoIntent = PendingIntent.getBroadcast(context, random.nextInt(), noIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         NotificationCompat.Builder builder = getMyNotification(context, intent);
-        builder.addAction(R.drawable.ic_clear_black_24dp, "NO", pendingNoIntent)
-                .addAction(R.drawable.ic_check_black_24dp, "YES", pendingYesIntent);
+        builder.addAction(R.drawable.ic_clear_white_24dp, "NO", pendingNoIntent)
+                .addAction(R.drawable.ic_check_white_24dp, "YES", pendingYesIntent);
 
         NotificationManager mgr = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mgr.notify(id, builder.build());
