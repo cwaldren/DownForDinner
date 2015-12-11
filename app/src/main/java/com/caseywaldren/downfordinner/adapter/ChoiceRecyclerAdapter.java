@@ -3,6 +3,7 @@ package com.caseywaldren.downfordinner.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.caseywaldren.downfordinner.R;
+import com.caseywaldren.downfordinner.TimeActivity;
 import com.caseywaldren.downfordinner.data.Choice;
 import com.parse.ParseObject;
 
@@ -22,6 +24,7 @@ import java.util.List;
 public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAdapter.ViewHolder>{
 
     public static boolean isRestaurants = true;
+    public static int threshold = 2;
     private List<Choice> choices;
     private Context context;
 
@@ -55,23 +58,29 @@ public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAd
         holder.btnVote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //update vote count on parse
-                holder.tvVoted.setVisibility(View.VISIBLE);
-                holder.btnVote.setVisibility(View.GONE);
+                int voteCount = choices.get(position).getObject().getInt("restaurantVotes") + 1;
+                if(voteCount == threshold) {
+                    advanceStateToTime();
+                } else {
+                    choices.get(position).getObject().put(
+                            "restaurantVotes",
+                            voteCount);
+                    choices.get(position).getObject().saveInBackground();
+                    holder.tvVoted.setVisibility(View.VISIBLE);
+                    holder.btnVote.setVisibility(View.GONE);
+                }
             }
         });
 
     }
 
-    /*
-    private void launchWeatherDetailsActivity(Choice choice) {
-        Intent intentOpenWeather = new Intent();
-        intentOpenWeather.setClass(context,
-                WeatherInfoActivity.class);
-        intentOpenWeather.putExtra(WeatherInfoActivity.CITY_OBJECT, city);
-        context.startActivity(intentOpenWeather);
+    public void advanceStateToTime() {
+
+        //update other users
+
+        Intent launchTimeChoiceActivity = new Intent(context, TimeActivity.class);
+        context.startActivity(launchTimeChoiceActivity);
     }
-    */
 
     @Override
     public int getItemCount() {
