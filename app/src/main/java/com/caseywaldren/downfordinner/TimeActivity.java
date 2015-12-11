@@ -1,7 +1,7 @@
 package com.caseywaldren.downfordinner;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -45,13 +45,13 @@ public class TimeActivity extends AppCompatActivity {
                             if (e == null) {
                                 adapter.addInitialChoices(status, objects);
                             } else {
-                                Log.i("yolo", "failed");
+                                Log.i("yolo", "Could not get any parseobjects from suggestions");
                             }
                         }
                     });
 
                 } else {
-                    Log.i("yolo", "failed");
+                    Log.i("yolo", "could not fetch the status");
                 }
             }
         });

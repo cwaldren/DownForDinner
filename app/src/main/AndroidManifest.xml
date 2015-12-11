@@ -16,6 +16,7 @@
     <uses-permission android:name="com.caseywaldren.downfordinner.permission.C2D_MESSAGE" />
 
     <application
+
         android:name=".DownForDinnerApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -67,24 +68,36 @@
             android:name="com.parse.push.notification_icon"
             android:resource="@mipmap/ic_launcher" />
 
-        <activity android:name=".InitialResponseActivity" />
-        <activity android:name=".IdleActivity" />
+        <activity
+            android:name=".InitialResponseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".IdleActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".WaitActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
 
 
         </activity>
         <activity
             android:name=".SuggestionActivity"
-            android:launchMode="singleTop"></activity>
-        <activity android:name=".ChoiceActivity">
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".ChoiceActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".TimeActivity" >
+        <activity
+            android:name=".TimeActivity"
+            android:screenOrientation="portrait">
 
         </activity>
-        <activity android:name=".AcceptedActivity">
+        <activity
+            android:name=".AcceptedActivity"
+            android:screenOrientation="portrait">
 
         </activity>
     </application>
