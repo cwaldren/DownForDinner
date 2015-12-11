@@ -45,7 +45,7 @@ public class WaitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wait);
         ButterKnife.bind(this);
-        tvResponses.setText("0 out of 2 committed");
+        tvResponses.setText(String.format(getResources().getString(R.string.x_out_of_y_commited), 0, 2));
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -99,7 +99,7 @@ public class WaitActivity extends AppCompatActivity {
                     tvResponses.setText(text);
                     Log.i("WAIT_UPDATE", "There are " + peopleList.size());
                 } else {
-                    Log.d("score", "Error: " + e.getMessage());
+                    Log.e("PARSE_QUERY", "Error: " + e.getMessage());
                 }
             }
         });
