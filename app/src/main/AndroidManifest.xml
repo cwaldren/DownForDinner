@@ -71,6 +71,9 @@
         <activity android:name=".IdleActivity" />
         <activity android:name=".WaitActivity" />
         <activity android:name=".SuggestionActivity"></activity>
+        <activity android:name=".ChoiceActivity" />
+        <activity android:name=".TimeActivity" />
+        <activity android:name=".AcceptedActivity"></activity>
     </application>
 
 </manifest>

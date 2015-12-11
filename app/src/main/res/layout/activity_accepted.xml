@@ -7,43 +7,55 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.caseywaldren.downfordinner.SuggestionActivity">
+    tools:context="com.caseywaldren.downfordinner.AcceptedActivity">
 
     <TextView
-        android:id="@+id/tvSuggestion"
+        android:id="@+id/tvRestaurantTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/etRestaurant"
-        android:layout_marginBottom="50dp"
-        android:textSize="30dp"
-        android:textAlignment="center"
+        android:layout_above="@+id/tvRestaurantName"
         android:layout_centerHorizontal="true"
-        android:text="Please enter your preferences"/>
+        android:layout_marginBottom="10dp"
+        android:textSize="25dp"
+        android:text="Restaurant:" />
 
-    <EditText
-        android:id="@+id/etRestaurant"
+    <TextView
+        android:id="@+id/tvRestaurantName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/tvTimeTitle"
+        android:textSize="30dp"
+        android:text="Finna vap"/>
+
+    <TextView
+        android:id="@+id/tvTimeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:hint="Enter a restaurant"/>
+        android:layout_marginTop="50dp"
+        android:textSize="25dp"
+        android:text="Time:"/>
 
-    <EditText
-        android:id="@+id/etTime"
+    <TextView
+        android:id="@+id/tvTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etRestaurant"
+        android:layout_below="@+id/tvTimeTitle"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:hint="Enter a time"/>
+        android:layout_marginTop="10dp"
+        android:textSize="30dp"
+        android:text="6:00 pm"/>
 
     <Button
-        android:id="@+id/btnSubmit"
+        android:id="@+id/btnReset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SUBMIT"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:text="RESET"/>
+
 
 </RelativeLayout>
