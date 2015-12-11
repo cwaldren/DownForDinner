@@ -141,11 +141,10 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
         }
         Random random = new Random();
 
-        JSONObject pushData2 = this.getPushData(intent);
-        if (pushData2.optString("alert").contains(ParseUser.getCurrentUser().getUsername())) {
+        if (pushData.optString("alert").contains(ParseUser.getCurrentUser().getUsername())) {
             return;
         }
-        if (pushData2.optString("title").equals("Dinner Update")) {
+        if (pushData.optString("title").equals("Dinner Update")) {
 
             NotificationManager mgr = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             mgr.notify(random.nextInt(), getUpdateNotification(context, intent));
