@@ -10,6 +10,6 @@ public class TimeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time);
 
-        setTitle("Choose times that work for you:");
+        setTitle("Times:");
     }
 }
