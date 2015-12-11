@@ -1,10 +1,11 @@
 package com.caseywaldren.downfordinner;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 
-import com.parse.Parse;
+import com.parse.ParsePush;
 import com.parse.ParseUser;
 
 import butterknife.Bind;
@@ -27,13 +28,16 @@ public class InitialResponseActivity extends AppCompatActivity {
     @OnClick(R.id.btnYes)
     public void respondYes() {
         ParseUser.getCurrentUser().put("downForDinner", true);
-        notifyGroup();
+        ParsePush.subscribeInBackground("DinnerUpdates");
+        Intent wait = new Intent(this, WaitActivity.class);
+        startActivity(wait);
+        finish();
     }
 
     @OnClick(R.id.btnNo)
     public void respondNo() {
         ParseUser.getCurrentUser().put("downForDinner", false);
-        notifyGroup();
+        finish();
     }
 
     public void notifyGroup(){

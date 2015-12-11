@@ -3,4 +3,5 @@
     <string name="string_min_participants">Minimum number of participants</string>
     <string name="string_down_for_dinner">Down for Dinner!</string>
     <string name="string_ask_down_for_dinner">Ask if anyone is</string>
+    <string name="x_out_of_y_commited">%1$d out of %2$d committed</string>
 </resources>

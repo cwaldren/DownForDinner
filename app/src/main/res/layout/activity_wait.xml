@@ -21,7 +21,7 @@
 
     <TextView
         android:id="@+id/tvResponses"
-        android:text="0 of 2 commited"
+        android:text="@string/x_out_of_y_commited"
         android:textSize="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
