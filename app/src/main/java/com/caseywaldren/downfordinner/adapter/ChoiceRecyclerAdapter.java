@@ -12,18 +12,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.caseywaldren.downfordinner.AcceptedActivity;
-import com.caseywaldren.downfordinner.ChoiceActivity;
+import com.caseywaldren.downfordinner.ParseUtils;
 import com.caseywaldren.downfordinner.R;
 import com.caseywaldren.downfordinner.TimeActivity;
 import com.caseywaldren.downfordinner.data.Choice;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParsePush;
 import com.parse.ParseQuery;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,18 +110,14 @@ public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAd
                     } else {
                         choices.get(position).getObject().put(objectCountTag, voteCount);
                         newObject.saveInBackground();
-
-                        ParsePush push = new ParsePush();
+                        String title = isRestaurants ? "Update Vote Count" : "Update Time Count";
+                        String action = isRestaurants ? ParseUtils.INTENT_UPDATE_VOTE_COUNT : ParseUtils.INTENT_UPDATE_TIME_COUNT;
                         try {
-                            String title = isRestaurants ? "Update Vote Count" : "Update Time Count";
-                            String action = isRestaurants ? ChoiceActivity.UPDATE_VOTE_COUNT : TimeActivity.UPDATE_TIME_COUNT;
-                            JSONObject data = new JSONObject("{\"title\": \"" + title + "\", \"alert\":\"" + title + "\",  \"action\":\"" + action + "\" }");
-                            push.setChannel("DinnerUpdates");
-                            push.setData(data);
-                            push.sendInBackground();
-                        } catch (JSONException ex) {
-                            ex.printStackTrace();
+                            ParseUtils.sendParsePush(ParseUtils.CHANNEL_DINNER_UPDATES, title, title, action);
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
                         }
+
                     }
 
                 }
@@ -132,24 +126,16 @@ public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAd
     }
 
     private void notifyEveryoneToAdvanceToRestaurant() {
-        ParsePush push = new ParsePush();
         try {
-            JSONObject data = new JSONObject("{\"title\": \"Plans Created\", \"alert\":\"Plans have been accepted.\",  \"action\":\"com.caseywaldren.downfordinner.intent.PLANS_CREATED\" }");
-            push.setChannel("DinnerUpdates");
-            push.setData(data);
-            push.sendInBackground();
+            ParseUtils.sendParsePush(ParseUtils.CHANNEL_DINNER_UPDATES, "Plans Created", "Plans have been accepted.", ParseUtils.INTENT_PLANS_CREATED);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
     private void notifyEveryoneToAdvanceToTime() {
-        ParsePush push = new ParsePush();
         try {
-            JSONObject data = new JSONObject("{\"title\": \"Choose Time\", \"alert\":\"Its time to choose a time\",  \"action\":\"com.caseywaldren.downfordinner.intent.BEGIN_CHOOSE_TIME\" }");
-            push.setChannel("DinnerUpdates");
-            push.setData(data);
-            push.sendInBackground();
+            ParseUtils.sendParsePush(ParseUtils.CHANNEL_DINNER_UPDATES, "Choose Time", "Its time to choose a time", ParseUtils.INTENT_BEGIN_CHOOSE_TIME);
         } catch (JSONException e) {
             e.printStackTrace();
         }
