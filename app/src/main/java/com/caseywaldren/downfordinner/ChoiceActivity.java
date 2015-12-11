@@ -12,8 +12,7 @@ import com.caseywaldren.downfordinner.adapter.ChoiceRecyclerAdapter;
 
 public class ChoiceActivity extends RecyclerActivity {
 
-    public static final String UPDATE_VOTE_COUNT = "com.caseywaldren.downfordinner.intent.UPDATE_VOTE_COUNT";
-    public static final String BEGIN_CHOOSE_TIME = "com.caseywaldren.downfordinner.intent.BEGIN_CHOOSE_TIME";
+
 
 
     @Override
@@ -23,21 +22,21 @@ public class ChoiceActivity extends RecyclerActivity {
         setTitle("Choices: ");
 
         // First we have a filter which we use to update every object's vote count
-        filter.addAction(UPDATE_VOTE_COUNT);
+        filter.addAction(ParseUtils.INTENT_UPDATE_VOTE_COUNT);
 
         // Then we have a filter which tells us to move on to the next activity
-        filter.addAction(BEGIN_CHOOSE_TIME);
+        filter.addAction(ParseUtils.INTENT_BEGIN_CHOOSE_TIME);
 
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 switch (intent.getAction()) {
-                    case BEGIN_CHOOSE_TIME:
+                    case ParseUtils.INTENT_BEGIN_CHOOSE_TIME:
                         Intent launchTimeChoiceActivity = new Intent(context, TimeActivity.class);
                         context.startActivity(launchTimeChoiceActivity);
                         ((Activity) context).finish();
                         break;
-                    case UPDATE_VOTE_COUNT:
+                    case ParseUtils.INTENT_UPDATE_VOTE_COUNT:
                         updateChoices();
                         break;
                 }

@@ -12,11 +12,6 @@ import com.caseywaldren.downfordinner.adapter.ChoiceRecyclerAdapter;
 
 public class TimeActivity extends RecyclerActivity {
 
-
-    public static final String UPDATE_TIME_COUNT = "com.caseywaldren.downfordinner.intent.UPDATE_TIME_COUNT";
-    public static final String PLANS_CREATED = "com.caseywaldren.downfordinner.intent.PLANS_CREATED";
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,21 +19,21 @@ public class TimeActivity extends RecyclerActivity {
         setTitle("Times:");
 
         // First we have a filter which tells us to update all the time votes
-        filter.addAction(UPDATE_TIME_COUNT);
+        filter.addAction(ParseUtils.INTENT_UPDATE_TIME_COUNT);
 
         // Then we have a filter which tells us to move on to the next activity
-        filter.addAction(PLANS_CREATED);
+        filter.addAction(ParseUtils.INTENT_PLANS_CREATED);
 
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 switch (intent.getAction()) {
-                    case PLANS_CREATED:
+                    case ParseUtils.INTENT_PLANS_CREATED:
                         Intent launchRestaurantActivity = new Intent(context, AcceptedActivity.class);
                         context.startActivity(launchRestaurantActivity);
                         ((Activity) context).finish();
                         break;
-                    case UPDATE_TIME_COUNT:
+                    case ParseUtils.INTENT_UPDATE_TIME_COUNT:
                         updateChoices();
                         break;
                 }
