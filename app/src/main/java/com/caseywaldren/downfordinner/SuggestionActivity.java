@@ -52,7 +52,7 @@ public class SuggestionActivity extends AppCompatActivity {
     }
 
     public void uploadSuggestion() {
-        ParseObject suggestion = new ParseObject("UserData");
+        ParseObject suggestion = new ParseObject("Suggestions");
         suggestion.put("restaurant", etRestaurant.getText().toString());
         suggestion.put("restaurantVotes", 1);
         suggestion.put("time", etTime.getText().toString());

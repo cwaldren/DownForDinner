@@ -25,16 +25,10 @@ public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAd
     private List<Choice> choices;
     private Context context;
 
-    public ChoiceRecyclerAdapter(Context context, boolean isRestaurants, List<ParseObject> objects) {
+    public ChoiceRecyclerAdapter(Context context, boolean isRestaurants) {
         this.context = context;
         this.isRestaurants = isRestaurants;
-
-        //get all choices from Parse
-        choices  = new ArrayList<Choice>();
-        for(int i = 0; i < objects.size(); i++) {
-            Choice choice = new Choice(objects.get(i));
-            choices.add(0, choice);
-        }
+        this.choices  = new ArrayList<Choice>();
 
     }
 
@@ -95,8 +89,10 @@ public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAd
     }
 
 
-    public void addChoice(Choice choice) {
-        choices.add(choice);
+    public void addInitialChoices(List<ParseObject> objects) {
+        for(int i = 0; i < objects.size(); i++) {
+            choices.add(new Choice(objects.get(i)));
+        }
         notifyDataSetChanged();
     }
 
