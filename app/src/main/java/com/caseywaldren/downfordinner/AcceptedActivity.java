@@ -1,5 +1,6 @@
 package com.caseywaldren.downfordinner;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.w3c.dom.Text;
 
@@ -61,9 +63,24 @@ public class AcceptedActivity extends AppCompatActivity {
 
         //delete all suggestions
 
-        //parse query to fetch all objects
-        //call delete in background on each object
-        //restore app to original state
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Suggestions");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    for (int i = 0; i < objects.size(); i++) {
+                        objects.get(i).deleteInBackground();
+                    }
+                } else {
+                    Log.i("error","failed to retrieve objects");
+                }
+            }
+        });
+
+        ParseUser.getCurrentUser().put("downForDinner", false);
+
+        Intent beginIdleActivity = new Intent(this, IdleActivity.class);
+        startActivity(beginIdleActivity);
+        finish();
 
     }
 }
