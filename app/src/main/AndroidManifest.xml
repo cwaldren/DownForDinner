@@ -75,7 +75,9 @@
 
 
         </activity>
-        <activity android:name=".SuggestionActivity"></activity>
+        <activity
+            android:name=".SuggestionActivity"
+            android:launchMode="singleTop"></activity>
         <activity android:name=".ChoiceActivity">
 
         </activity>
