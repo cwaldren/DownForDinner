@@ -24,7 +24,9 @@ import java.util.List;
 public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAdapter.ViewHolder>{
 
     public static boolean isRestaurants = true;
-    public static int threshold = 2;
+    public static String objectTag;
+    public static String objectCountTag;
+    public static ParseObject status;
     private List<Choice> choices;
     private Context context;
 
@@ -32,6 +34,14 @@ public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAd
         this.context = context;
         this.isRestaurants = isRestaurants;
         this.choices  = new ArrayList<Choice>();
+
+        if(isRestaurants) {
+            objectTag = "restaurant";
+            objectCountTag = "restaurantVotes";
+        } else {
+            objectTag = "time";
+            objectCountTag = "timeVotes";
+        }
 
     }
 
@@ -58,12 +68,15 @@ public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAd
         holder.btnVote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int voteCount = choices.get(position).getObject().getInt("restaurantVotes") + 1;
-                if(voteCount == threshold) {
+                int voteCount = choices.get(position).getObject().getInt(objectCountTag) + 1;
+                if(voteCount == status.getInt("threshold")) {
+                    status.put(objectTag,
+                            choices.get(position).getObject().getString(objectTag));
+                    status.saveInBackground();
                     advanceStateToTime();
                 } else {
                     choices.get(position).getObject().put(
-                            "restaurantVotes",
+                            objectCountTag,
                             voteCount);
                     choices.get(position).getObject().saveInBackground();
                     holder.tvVoted.setVisibility(View.VISIBLE);
@@ -87,18 +100,9 @@ public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAd
         return choices.size();
     }
 
-    public void updateAllChoices() {
-        if(getItemCount() != 0) {
-
-        }
-    }
-
-    public void removeChoice(int index) {
-        choices.remove(index);
-    }
-
-
-    public void addInitialChoices(List<ParseObject> objects) {
+    public void addInitialChoices(ParseObject status, List<ParseObject> objects) {
+        this.status = status;
+        choices = new ArrayList<Choice>();
         for(int i = 0; i < objects.size(); i++) {
             choices.add(new Choice(objects.get(i)));
         }

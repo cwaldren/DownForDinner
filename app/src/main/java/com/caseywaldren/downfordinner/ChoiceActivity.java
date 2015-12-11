@@ -25,7 +25,7 @@ public class ChoiceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choice);
 
-        setTitle("Vote for one or more restaurant:");
+        setTitle("Choices: ");
 
         adapter = new ChoiceRecyclerAdapter(ChoiceActivity.this, true);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -35,17 +35,28 @@ public class ChoiceActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(adapter);
 
-
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Suggestions");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> objects, ParseException e) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("AppStatus");
+        query.getInBackground("tuD10rMajj", new GetCallback<ParseObject>() {
+            public void done(final ParseObject status, ParseException e) {
                 if (e == null) {
-                    adapter.addInitialChoices(objects);
+
+                    ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Suggestions");
+                    query1.findInBackground(new FindCallback<ParseObject>() {
+                        public void done(List<ParseObject> objects, ParseException e) {
+                            if (e == null) {
+                                adapter.addInitialChoices(status, objects);
+                            } else {
+                                Log.i("yolo", "failed");
+                            }
+                        }
+                    });
+
                 } else {
                     Log.i("yolo", "failed");
                 }
             }
         });
+
 
     }
 
