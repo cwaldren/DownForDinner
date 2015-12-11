@@ -8,6 +8,8 @@ import android.widget.EditText;
 
 import com.parse.ParseObject;
 
+import org.json.JSONException;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -41,15 +43,11 @@ public class SuggestionActivity extends AppCompatActivity {
         } else {
 
             uploadSuggestion();
-            notifyUsers();
             startChoiceActivity();
         }
 
     }
 
-    public void notifyUsers() {
-        //Send push to update data set
-    }
 
     public void uploadSuggestion() {
         ParseObject suggestion = new ParseObject("Suggestions");
@@ -58,6 +56,12 @@ public class SuggestionActivity extends AppCompatActivity {
         suggestion.put("time", etTime.getText().toString());
         suggestion.put("timeVotes", 0);
         suggestion.saveInBackground();
+
+        try {
+            ParseUtils.sendParsePush(ParseUtils.CHANNEL_DINNER_UPDATES, "Dinner Update", "A suggestion has been added.", ParseUtils.INTENT_SUGGESTION_ADDED);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void startChoiceActivity() {

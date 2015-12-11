@@ -40,14 +40,14 @@ public class AcceptedActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("AppStatus");
-        query.getInBackground(RecyclerActivity.STATUS_OBJECT_ID, new GetCallback<ParseObject>() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseUtils.CLASS_APP_STATUS);
+        query.getInBackground(ParseUtils.ID_APP_STATUS, new GetCallback<ParseObject>() {
             public void done(final ParseObject status, ParseException e) {
                 if (e == null) {
                     tvRestaurantName.setText(status.getString("restaurant"));
                     tvTime.setText(status.getString("time"));
                 } else {
-                    Log.i("PARSE_QUERY", "Failed to fetch status");
+                    Log.i(ParseUtils.TAG_PARSE_QUERY, "Failed to fetch status");
                 }
             }
         });
@@ -67,7 +67,7 @@ public class AcceptedActivity extends AppCompatActivity {
                         objects.get(i).deleteInBackground();
                     }
                 } else {
-                    Log.i("PARSE_QUERY", "failed to retrieve objects");
+                    Log.i(ParseUtils.TAG_PARSE_QUERY, "failed to retrieve objects");
                 }
             }
         });

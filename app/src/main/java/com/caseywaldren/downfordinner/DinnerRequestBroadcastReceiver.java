@@ -10,7 +10,6 @@ import com.parse.ParsePush;
 import com.parse.ParseUser;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by Casey on 12/10/2015.
@@ -23,25 +22,17 @@ public class DinnerRequestBroadcastReceiver extends BroadcastReceiver {
             case DinnerPushBroadcastReceiver.ACTION_NO_DINNER:
                 Log.i("DINNER_RESPONSE", "NO DINNER!");
                 ParseUser.getCurrentUser().put("downForDinner", false);
-
                 break;
             case DinnerPushBroadcastReceiver.ACTION_YES_DINNER:
                 Log.i("DINNER_RESPONSE", "YES DINNER!");
-                ParsePush.subscribeInBackground("DinnerUpdates");
+                ParsePush.subscribeInBackground(ParseUtils.CHANNEL_DINNER_UPDATES);
                 ParseUser.getCurrentUser().put("downForDinner", true);
-                ParsePush push = new ParsePush();
                 String alertText = ParseUser.getCurrentUser().getUsername() + " is down. ";
                 try {
-                    JSONObject data = new JSONObject("{\"title\": \"Dinner Update\", \"alert\":\"" + alertText + "\",  \"action\":\"com.caseywaldren.downfordinner.intent.SOMEONE_IS_DOWN_FOR_DINNER\" }");
-                    push.setChannel("DinnerUpdates");
-                    push.setData(data);
-                    push.sendInBackground();
+                    ParseUtils.sendParsePush(ParseUtils.CHANNEL_DINNER_UPDATES, "Dinner Update", alertText, ParseUtils.INTENT_SOMEONE_DOWN_FOR_DINNER);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                // context.sendBroadcast(new Intent(WaitActivity.SOMEONE_IS_DOWN_FOR_DINNER));
-
                 break;
         }
 

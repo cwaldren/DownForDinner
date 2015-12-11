@@ -22,16 +22,16 @@ import java.util.Random;
  * Created by Casey on 12/10/2015.
  */
 public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
+
+    public static final String KEY_NOTIFICATION_ID = "KEY_NOTIFICATION_ID";
     public static final String ACTION_YES_DINNER = "com.caseywaldren.intent.YES_DINNER";
     public static final String ACTION_NO_DINNER = "com.caseywaldren.intent.NO_DINNER";
-    public static final String KEY_NOTIFICATION_ID = "KEY_NOTIFICATION_ID";
-
 
     private JSONObject getPushData(Intent intent) {
         try {
             return new JSONObject(intent.getStringExtra(KEY_PUSH_DATA));
         } catch (JSONException e) {
-            Log.e("PARSE_PUSH_JSON_ERR", "Unexpected JSONException when receiving push data: ", e);
+            Log.e(ParseUtils.TAG_PARSE_QUERY, "Unexpected JSONException when receiving push data: ", e);
             return null;
         }
     }
@@ -136,7 +136,7 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
             action = pushData.optString("action", null);
         }
         if (action != null) {
-            Log.i("PUSH_REC", "Going to broadcast " + action);
+            Log.i("PushBroadcastRec", "Going to broadcast " + action);
 
             Bundle extras = intent.getExtras();
             Intent broadcastIntent = new Intent();
