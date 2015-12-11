@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.caseywaldren.downfordinner.AcceptedActivity;
+import com.caseywaldren.downfordinner.ChoiceActivity;
 import com.caseywaldren.downfordinner.R;
 import com.caseywaldren.downfordinner.TimeActivity;
 import com.caseywaldren.downfordinner.data.Choice;
@@ -100,15 +102,22 @@ public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAd
                         status.put(objectTag,
                                 choices.get(position).getObject().getString(objectTag));
                         status.saveInBackground();
-                        notifyEveryoneToAdvanceToTime();
-                        advanceStateToTime();
+                        if (isRestaurants) {
+                            notifyEveryoneToAdvanceToTime();
+                            advanceStateToTime();
+                        } else {
+                            notifyEveryoneToAdvanceToRestaurant();
+                            advanceStateToAccepted();
+                        }
                     } else {
                         choices.get(position).getObject().put(objectCountTag, voteCount);
                         newObject.saveInBackground();
 
                         ParsePush push = new ParsePush();
                         try {
-                            JSONObject data = new JSONObject("{\"title\": \"Update Vote Count\", \"alert\":\"Updating vote count\",  \"action\":\"com.caseywaldren.downfordinner.intent.UPDATE_VOTE_COUNT\" }");
+                            String title = isRestaurants ? "Update Vote Count" : "Update Time Count";
+                            String action = isRestaurants ? ChoiceActivity.UPDATE_VOTE_COUNT : TimeActivity.UPDATE_TIME_COUNT;
+                            JSONObject data = new JSONObject("{\"title\": \"" + title + "\", \"alert\":\"" + title + "\",  \"action\":\"" + action + "\" }");
                             push.setChannel("DinnerUpdates");
                             push.setData(data);
                             push.sendInBackground();
@@ -120,6 +129,18 @@ public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAd
                 }
             }
         });
+    }
+
+    private void notifyEveryoneToAdvanceToRestaurant() {
+        ParsePush push = new ParsePush();
+        try {
+            JSONObject data = new JSONObject("{\"title\": \"Plans Created\", \"alert\":\"Plans have been accepted.\",  \"action\":\"com.caseywaldren.downfordinner.intent.PLANS_CREATED\" }");
+            push.setChannel("DinnerUpdates");
+            push.setData(data);
+            push.sendInBackground();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void notifyEveryoneToAdvanceToTime() {
@@ -140,6 +161,12 @@ public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAd
 
         Intent launchTimeChoiceActivity = new Intent(context, TimeActivity.class);
         context.startActivity(launchTimeChoiceActivity);
+        ((Activity) context).finish();
+    }
+
+    public void advanceStateToAccepted() {
+        Intent launchAcceptedActivity = new Intent(context, AcceptedActivity.class);
+        context.startActivity(launchAcceptedActivity);
         ((Activity) context).finish();
     }
 
