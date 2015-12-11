@@ -47,7 +47,10 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         if (ParseUser.getCurrentUser() != null) {
-            ParseUser.logOut();
+            //wait when would this ever happen?
+            Intent idleActivity = new Intent(this, IdleActivity.class);
+            startActivity(idleActivity);
+            finish();
         }
     }
 
