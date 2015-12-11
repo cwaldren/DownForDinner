@@ -32,7 +32,7 @@ public class DinnerRequestBroadcastReceiver extends BroadcastReceiver {
                 ParsePush push = new ParsePush();
                 String alertText = ParseUser.getCurrentUser().getUsername() + " is down. ";
                 try {
-                    JSONObject data = new JSONObject("{\"title\": \"Dinner Update\", \"alert\":\"" + alertText + "\" }");
+                    JSONObject data = new JSONObject("{\"title\": \"Dinner Update\", \"alert\":\"" + alertText + "\",  \"action\":\"com.caseywaldren.downfordinner.intent.SOMEONE_IS_DOWN_FOR_DINNER\" }");
                     push.setChannel("DinnerUpdates");
                     push.setData(data);
                     push.sendInBackground();
@@ -40,7 +40,7 @@ public class DinnerRequestBroadcastReceiver extends BroadcastReceiver {
                     e.printStackTrace();
                 }
 
-                context.sendBroadcast(new Intent(WaitActivity.SOMEONE_IS_DOWN_FOR_DINNER));
+                // context.sendBroadcast(new Intent(WaitActivity.SOMEONE_IS_DOWN_FOR_DINNER));
 
                 break;
         }

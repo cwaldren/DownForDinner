@@ -55,6 +55,7 @@ public class IdleActivity extends AppCompatActivity {
         String alertText = ParseUser.getCurrentUser().getUsername() + " wants dinner. Do you?";
         try {
             JSONObject data = new JSONObject("{\"title\": \"Dinner Request!\", \"alert\":\"" + alertText + "\" }");
+
             push.setChannel("DinnerRequests");
             push.setData(data);
             push.sendInBackground();

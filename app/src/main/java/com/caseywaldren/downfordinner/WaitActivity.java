@@ -29,6 +29,8 @@ import butterknife.OnClick;
 public class WaitActivity extends AppCompatActivity {
 
     public static final String SOMEONE_IS_DOWN_FOR_DINNER = "com.caseywaldren.downfordinner.intent.SOMEONE_IS_DOWN_FOR_DINNER";
+    public static final String SOMEONE_DROPPED_OUT = "com.caseywaldren.downfordinner.intent.SOMEONE_DROPPED_OUT";
+
     @Bind(R.id.tvResponses)
     TextView tvResponses;
 
@@ -54,6 +56,7 @@ public class WaitActivity extends AppCompatActivity {
 
         filter = new IntentFilter();
         filter.addAction(SOMEONE_IS_DOWN_FOR_DINNER);
+        filter.addAction(SOMEONE_DROPPED_OUT);
 
         fetchPeopleWhoAreReady();
 
@@ -68,7 +71,7 @@ public class WaitActivity extends AppCompatActivity {
         ParsePush push = new ParsePush();
         String alertText = ParseUser.getCurrentUser().getUsername() + " dropped out. ";
         try {
-            JSONObject data = new JSONObject("{\"title\": \"Dinner Update\", \"alert\":\"" + alertText + "\" }");
+            JSONObject data = new JSONObject("{\"title\": \"Dinner Update\", \"alert\":\"" + alertText + "\",  \"action\":\"com.caseywaldren.downfordinner.intent.SOMEONE_DROPPED_OUT\" }");
             push.setChannel("DinnerUpdates");
             push.setData(data);
             push.sendInBackground();
@@ -80,6 +83,7 @@ public class WaitActivity extends AppCompatActivity {
     }
 
     private void fetchPeopleWhoAreReady() {
+
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("downForDinner", true);
         query.findInBackground(new FindCallback<ParseUser>() {
