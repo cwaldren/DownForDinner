@@ -75,6 +75,8 @@ public class WaitActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        finish();
     }
 
     private void fetchPeopleWhoAreReady() {
@@ -84,6 +86,11 @@ public class WaitActivity extends AppCompatActivity {
             public void done(List<ParseUser> peopleList, ParseException e) {
                 if (e == null) {
                     Resources res = getResources();
+                    if (peopleList.size() == 2) {
+                        Intent suggestions = new Intent(WaitActivity.this, SuggestionActivity.class);
+                        startActivity(suggestions);
+                        finish();
+                    }
                     String text = String.format(res.getString(R.string.x_out_of_y_commited), peopleList.size(), 2);
                     tvResponses.setText(text);
                     Log.i("WAIT_UPDATE", "There are " + peopleList.size());

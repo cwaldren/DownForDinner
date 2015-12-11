@@ -10,6 +10,7 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.parse.ParsePushBroadcastReceiver;
+import com.parse.ParseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -148,6 +149,9 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
             return;
         }
 
+        if (pushData2.optString("alert").contains(ParseUser.getCurrentUser().getUsername())) {
+            return;
+        }
 
         String packageName = context.getPackageName();
 

@@ -1,8 +1,8 @@
 package com.caseywaldren.downfordinner;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,7 +48,9 @@ public class IdleActivity extends AppCompatActivity {
         } catch (NumberFormatException e) {
             Log.i("IDLE_ACTIVITY", "Couldn't parse min people number, therefore using default");
         }
-
+        ParseUser.getCurrentUser().put("downForDinner", true);
+        ParsePush.subscribeInBackground("DinnerUpdates");
+        ParseUser.getCurrentUser().saveInBackground();
         ParsePush push = new ParsePush();
         String alertText = ParseUser.getCurrentUser().getUsername() + " wants dinner. Do you?";
         try {
@@ -56,6 +58,11 @@ public class IdleActivity extends AppCompatActivity {
             push.setChannel("DinnerRequests");
             push.setData(data);
             push.sendInBackground();
+
+            Intent wait = new Intent(this, WaitActivity.class);
+            startActivity(wait);
+            finish();
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
