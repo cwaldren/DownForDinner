@@ -9,14 +9,11 @@ import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
-
-import com.parse.Parse;
 import com.parse.ParsePushBroadcastReceiver;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -27,6 +24,7 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
     public static final String ACTION_NO_DINNER = "com.caseywaldren.intent.NO_DINNER";
     public static final String KEY_NOTIFICATION_ID = "KEY_NOTIFICATION_ID";
 
+
     private JSONObject getPushData(Intent intent) {
         try {
             return new JSONObject(intent.getStringExtra(KEY_PUSH_DATA));
@@ -36,6 +34,34 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
         }
     }
 
+    protected Notification getUpdateNotification(Context context, Intent intent) {
+        JSONObject pushData = this.getPushData(intent);
+        if (pushData == null) {
+            return null;
+        }
+        String title = pushData.optString("title");
+        String alert = pushData.optString("alert");
+
+
+        Intent contentIntent = new Intent(ParsePushBroadcastReceiver.ACTION_PUSH_OPEN);
+        contentIntent.putExtras(intent.getExtras());
+        contentIntent.setPackage(context.getPackageName());
+
+        PendingIntent pContentIntent = PendingIntent.getBroadcast(context, 0,
+                contentIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Builder parseBuilder = new NotificationCompat.Builder(context);
+        parseBuilder.setContentTitle(title)
+                .setContentText(alert)
+                .setTicker(alert)
+                .setSmallIcon(this.getSmallIconId(context, intent))
+                .setLargeIcon(this.getLargeIcon(context, intent))
+                .setContentIntent(pContentIntent)
+                .setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL);
+
+        return parseBuilder.build();
+
+    }
     protected NotificationCompat.Builder getMyNotification(Context context, Intent intent) {
         JSONObject pushData = this.getPushData(intent);
         if (pushData == null) {
@@ -61,6 +87,7 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
         Intent contentIntent = new Intent(ParsePushBroadcastReceiver.ACTION_PUSH_OPEN);
         contentIntent.putExtras(extras);
         contentIntent.setPackage(packageName);
+
 
         Intent deleteIntent = new Intent(ParsePushBroadcastReceiver.ACTION_PUSH_DELETE);
         deleteIntent.putExtras(extras);
@@ -111,8 +138,18 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
             broadcastIntent.setPackage(context.getPackageName());
             context.sendBroadcast(broadcastIntent);
         }
-        String packageName = context.getPackageName();
         Random random = new Random();
+
+        JSONObject pushData2 = this.getPushData(intent);
+        if (pushData2.optString("title").equals("Dinner Update")) {
+            NotificationManager mgr = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            mgr.notify(random.nextInt(), getUpdateNotification(context, intent));
+
+            return;
+        }
+
+
+        String packageName = context.getPackageName();
 
         int id = random.nextInt();
         Intent yesIntent = new Intent(DinnerPushBroadcastReceiver.ACTION_YES_DINNER);
