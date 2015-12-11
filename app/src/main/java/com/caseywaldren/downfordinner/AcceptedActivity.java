@@ -1,8 +1,8 @@
 package com.caseywaldren.downfordinner;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,8 +13,6 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -43,15 +41,13 @@ public class AcceptedActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("AppStatus");
-        query.getInBackground("tuD10rMajj", new GetCallback<ParseObject>() {
+        query.getInBackground(RecyclerActivity.STATUS_OBJECT_ID, new GetCallback<ParseObject>() {
             public void done(final ParseObject status, ParseException e) {
                 if (e == null) {
-
                     tvRestaurantName.setText(status.getString("restaurant"));
                     tvTime.setText(status.getString("time"));
-
                 } else {
-                    Log.i("yolo", "failed");
+                    Log.i("PARSE_QUERY", "Failed to fetch status");
                 }
             }
         });
@@ -71,7 +67,7 @@ public class AcceptedActivity extends AppCompatActivity {
                         objects.get(i).deleteInBackground();
                     }
                 } else {
-                    Log.i("error","failed to retrieve objects");
+                    Log.i("PARSE_QUERY", "failed to retrieve objects");
                 }
             }
         });
