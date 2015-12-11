@@ -61,6 +61,8 @@ public class AcceptedActivity extends AppCompatActivity {
 
         //delete all suggestions
 
+        //parse query to fetch all objects
+        //call delete in background on each object
         //restore app to original state
 
     }
