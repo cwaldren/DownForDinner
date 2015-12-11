@@ -27,7 +27,7 @@ public class DownForDinnerApplication extends Application {
 
         ParseInstallation.getCurrentInstallation().saveInBackground();
         Parse.setLogLevel(Parse.LOG_LEVEL_VERBOSE);
-        //  ParsePush.subscribeInBackground("DownForDinner");
+        ParsePush.subscribeInBackground("DinnerRequests");
 
     }
 }

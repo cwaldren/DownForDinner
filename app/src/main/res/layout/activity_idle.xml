@@ -13,11 +13,11 @@
         android:id="@+id/tvDownForDinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:layout_centerHorizontal="true"
         android:layout_above="@+id/btnDownForDinner"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
-        android:text="Ask if anyone is" />
+        android:text="@string/string_ask_down_for_dinner"
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/btnDownForDinner"
@@ -27,8 +27,8 @@
         android:layout_centerVertical="true"
         android:width="200dp"
         android:height="100dp"
-        android:textSize="25sp"
-        android:text="Down for Dinner!" />
+        android:text="@string/string_down_for_dinner"
+        android:textSize="25sp" />
 
     <TextView
         android:id="@+id/tvMinPeople"
@@ -36,19 +36,20 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/etMinPeople"
         android:layout_centerHorizontal="true"
-        android:textAlignment="center"
         android:layout_marginBottom="10dp"
-        android:textSize="20sp"
-        android:text="Minimum number of participants" />
+        android:text="@string/string_min_participants"
+        android:textAlignment="center"
+        android:textSize="20sp" />
 
     <EditText
         android:id="@+id/etMinPeople"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="2"
-        android:textAlignment="center"
-        android:layout_marginBottom="20dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:inputType="number"
+        android:hint="2"
+        android:textAlignment="center" />
 
 </RelativeLayout>
