@@ -40,10 +40,12 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
         if (pushData == null) {
             return null;
         }
-        String title = pushData.optString("title");
-        String alert = pushData.optString("alert");
 
+        // Title will be something like "Dinner Update", while alert is "Bob wants dinner"
+        String title = pushData.optString("title", "Dinner Update");
+        String alert = pushData.optString("alert", "Someone changed their choice.");
 
+        //Required for Parse  to route to pushReceive
         Intent contentIntent = new Intent(ParsePushBroadcastReceiver.ACTION_PUSH_OPEN);
         contentIntent.putExtras(intent.getExtras());
         contentIntent.setPackage(context.getPackageName());
@@ -51,6 +53,7 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
         PendingIntent pContentIntent = PendingIntent.getBroadcast(context, 0,
                 contentIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder parseBuilder = new NotificationCompat.Builder(context);
+
         parseBuilder.setContentTitle(title)
                 .setContentText(alert)
                 .setTicker(alert)
@@ -70,7 +73,7 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
         }
 
         String title = pushData.optString("title", "Dinner Notification");
-        String alert = pushData.optString("alert", "Notification received.");
+        String alert = pushData.optString("alert", "Respond with your choice.");
         String tickerText = alert;
 
         Bundle extras = intent.getExtras();
@@ -87,6 +90,7 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
 
         Intent contentIntent = new Intent(ParsePushBroadcastReceiver.ACTION_PUSH_OPEN);
         contentIntent.putExtras(extras);
+        contentIntent.setClass(context, InitialResponseActivity.class);
         contentIntent.setPackage(packageName);
 
 
