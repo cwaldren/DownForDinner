@@ -32,7 +32,8 @@ public final class ParseUtils {
     public static void sendParsePush(String channel, String title, String alert) throws JSONException {
         JSONObject data = new JSONObject("{\"title\": \"" + title +
                 "\", \"alert\":\"" + alert +
-                "\", \"user\":\"" + ParseUser.getCurrentUser().getUsername() + "\" }");
+                "\", \"user\":\"" + ParseUser.getCurrentUser().getUsername() +
+                "\", \"channel\":\"" + channel + "\"}");
         ParsePush push = new ParsePush();
         push.setChannel(channel);
         push.setData(data);
@@ -44,7 +45,8 @@ public final class ParseUtils {
         JSONObject data = new JSONObject("{\"title\": \"" + title +
                 "\", \"alert\":\"" + alert +
                 "\", \"user\":\"" + ParseUser.getCurrentUser().getUsername() +
-                "\", \"action\":\"" + action + "\" }");
+                "\", \"action\":\"" + action +
+                "\", \"channel\":\"" + channel + "\"}");
         ParsePush push = new ParsePush();
         push.setChannel(channel);
         push.setData(data);

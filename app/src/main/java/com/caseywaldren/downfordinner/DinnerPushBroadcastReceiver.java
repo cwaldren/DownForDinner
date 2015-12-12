@@ -147,18 +147,17 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
         }
         Random random = new Random();
 
-        if (pushData.optString("alert").contains(ParseUser.getCurrentUser().getUsername())) {
-            Log.i("PUSH_REC", "Got a push sent from myself");
+        if (pushData.optString("user").contentEquals(ParseUser.getCurrentUser().getUsername())) {
+            Log.i("PUSH_REC", "Got a self push");
             return;
         }
-        if (pushData.optString("title").equals("Dinner Update")) {
+        if (pushData.optString("channel").contentEquals(ParseUtils.CHANNEL_DINNER_UPDATES)) {
             Log.i("PUSH_REC", "Got a dinner plan update");
-
             NotificationManager mgr = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             mgr.notify(random.nextInt(), getUpdateNotification(context, intent));
-
             return;
         }
+
 
 
         String packageName = context.getPackageName();
@@ -195,11 +194,27 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
 
     @Override
     public Class<? extends Activity> getActivity(Context context, Intent intent) {
-        if (this.getPushData(intent).optString("title").equals("Dinner Request!")) {
+        JSONObject pushData = this.getPushData(intent);
+        assert pushData != null;
+        if (pushData.optString("title").equals("Dinner Request!")) {
             return InitialResponseActivity.class;
         } else {
-            return WaitActivity.class;
+            try {
+                String action = pushData.getString("action");
+                switch (action) {
+                    case ParseUtils.INTENT_SOMEONE_DOWN_FOR_DINNER:
+                        return WaitActivity.class;
+                    case ParseUtils.INTENT_BEGIN_CHOOSE_TIME:
+                        return TimeActivity.class;
+                    case ParseUtils.INTENT_PLANS_CREATED:
+                        return AcceptedActivity.class;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
+
+        return IdleActivity.class;
     }
 
 }
