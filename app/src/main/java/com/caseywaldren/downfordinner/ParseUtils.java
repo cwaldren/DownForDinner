@@ -1,5 +1,7 @@
 package com.caseywaldren.downfordinner;
 
+import android.util.Log;
+
 import com.parse.ParsePush;
 import com.parse.ParseUser;
 
@@ -24,7 +26,7 @@ public final class ParseUtils {
     public static final String INTENT_PLANS_CREATED = BASE_INTENT_PACKAGE + ".PLANS_CREATED";
     public static final String INTENT_UPDATE_VOTE_COUNT = BASE_INTENT_PACKAGE + ".UPDATE_VOTE_COUNT";
     public static final String INTENT_BEGIN_CHOOSE_TIME = BASE_INTENT_PACKAGE + ".BEGIN_CHOOSE_TIME";
-
+    public static final String INTENT_SOMEONE_DROPPED_OUT = BASE_INTENT_PACKAGE + ".SOMEONE_DROPPED_OUT";
     private ParseUtils() {
 
     }
@@ -33,7 +35,9 @@ public final class ParseUtils {
         JSONObject data = new JSONObject("{\"title\": \"" + title +
                 "\", \"alert\":\"" + alert +
                 "\", \"user\":\"" + ParseUser.getCurrentUser().getUsername() +
-                "\", \"channel\":\"" + channel + "\"}");
+                "\", \"chan\":\"" + channel + "\"}");
+        Log.i("PUSH_INFO", data.getString("chan"));
+
         ParsePush push = new ParsePush();
         push.setChannel(channel);
         push.setData(data);
@@ -46,7 +50,8 @@ public final class ParseUtils {
                 "\", \"alert\":\"" + alert +
                 "\", \"user\":\"" + ParseUser.getCurrentUser().getUsername() +
                 "\", \"action\":\"" + action +
-                "\", \"channel\":\"" + channel + "\"}");
+                "\", \"chan\":\"" + channel + "\"}");
+        Log.i("PUSH_INFO", data.getString("chan"));
         ParsePush push = new ParsePush();
         push.setChannel(channel);
         push.setData(data);

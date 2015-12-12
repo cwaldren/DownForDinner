@@ -13,12 +13,10 @@ import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.List;
 
@@ -28,8 +26,7 @@ import butterknife.OnClick;
 
 public class WaitActivity extends AppCompatActivity {
 
-    public static final String SOMEONE_IS_DOWN_FOR_DINNER = "com.caseywaldren.downfordinner.intent.SOMEONE_IS_DOWN_FOR_DINNER";
-    public static final String SOMEONE_DROPPED_OUT = "com.caseywaldren.downfordinner.intent.SOMEONE_DROPPED_OUT";
+
 
     @Bind(R.id.tvResponses)
     TextView tvResponses;
@@ -55,8 +52,8 @@ public class WaitActivity extends AppCompatActivity {
         };
 
         filter = new IntentFilter();
-        filter.addAction(SOMEONE_IS_DOWN_FOR_DINNER);
-        filter.addAction(SOMEONE_DROPPED_OUT);
+        filter.addAction(ParseUtils.INTENT_SOMEONE_DOWN_FOR_DINNER);
+        filter.addAction(ParseUtils.INTENT_SOMEONE_DROPPED_OUT);
 
         fetchPeopleWhoAreReady();
 
@@ -68,16 +65,13 @@ public class WaitActivity extends AppCompatActivity {
         user.put("downForDinner", false);
         user.saveInBackground();
 
-        ParsePush push = new ParsePush();
         String alertText = ParseUser.getCurrentUser().getUsername() + " dropped out. ";
         try {
-            JSONObject data = new JSONObject("{\"title\": \"Dinner Update\", \"alert\":\"" + alertText + "\",  \"action\":\"com.caseywaldren.downfordinner.intent.SOMEONE_DROPPED_OUT\" }");
-            push.setChannel("DinnerUpdates");
-            push.setData(data);
-            push.sendInBackground();
+            ParseUtils.sendParsePush(ParseUtils.CHANNEL_DINNER_UPDATES, "Dinner Update", alertText, ParseUtils.INTENT_SOMEONE_DROPPED_OUT);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
 
         finish();
     }

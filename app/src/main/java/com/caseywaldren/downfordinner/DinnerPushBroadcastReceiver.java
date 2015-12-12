@@ -146,12 +146,17 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
             context.sendBroadcast(broadcastIntent);
         }
         Random random = new Random();
+        try {
+            Log.i("PUSH_CONTENTS", pushData.getString("chan"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         if (pushData.optString("user").equals(ParseUser.getCurrentUser().getUsername())) {
             Log.i("PUSH_REC", "Got a self push");
             return;
         }
-        if (pushData.optString("channel").equals(ParseUtils.CHANNEL_DINNER_UPDATES)) {
+        if (pushData.optString("chan").equals(ParseUtils.CHANNEL_DINNER_UPDATES)) {
             Log.i("PUSH_REC", "Got a dinner plan update");
             NotificationManager mgr = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             mgr.notify(random.nextInt(), getUpdateNotification(context, intent));
