@@ -77,6 +77,8 @@ public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAd
             @Override
             public void onClick(View v) {
 
+                choices.get(position).getObject().increment(objectCountTag, 1);
+                choices.get(position).getObject().saveInBackground();
                 fetchLatestVoteCountAndAddOneVote(choices.get(position).getObject(), position);
 
                 holder.tvVoted.setVisibility(View.VISIBLE);
@@ -95,8 +97,8 @@ public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAd
                     Log.e("PARSE_UPDATE", "Failed to fetch updated vote count before voting");
                 } else {
                     choices.get(position).setObject(newObject);
-                    int voteCount = newObject.getInt(objectCountTag) + 1;
-                    if (voteCount == status.getInt("threshold")) {
+                    int voteCount = newObject.getInt(objectCountTag);
+                    if (voteCount == status.getInt("threshold") || voteCount >= status.getInt("threshold")) {
                         status.put(objectTag,
                                 choices.get(position).getObject().getString(objectTag));
                         status.saveInBackground();
@@ -108,8 +110,6 @@ public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAd
                             advanceStateToAccepted();
                         }
                     } else {
-                        choices.get(position).getObject().put(objectCountTag, voteCount);
-                        newObject.saveInBackground();
                         String title = isRestaurants ? "Update Vote Count" : "Update Time Count";
                         String action = isRestaurants ? ParseUtils.INTENT_UPDATE_VOTE_COUNT : ParseUtils.INTENT_UPDATE_TIME_COUNT;
                         try {
