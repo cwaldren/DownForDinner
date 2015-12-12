@@ -34,6 +34,8 @@ public class IdleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_idle);
         ButterKnife.bind(this);
 
+        getSupportActionBar().hide();
+
         filter = new IntentFilter(DinnerPushBroadcastReceiver.ACTION_YES_DINNER);
         receiver = new BroadcastReceiver() {
             @Override

@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/tvTimeTitle"
+        android:textColor="#000000"
         android:textSize="30dp"
         android:text="Finna vap"/>
 
@@ -45,6 +46,7 @@
         android:layout_below="@+id/tvTimeTitle"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
+        android:textColor="#000000"
         android:textSize="30dp"
         android:text="6:00 pm"/>
 

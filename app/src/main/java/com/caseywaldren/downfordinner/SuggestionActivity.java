@@ -32,6 +32,8 @@ public class SuggestionActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        getSupportActionBar().hide();
+
     }
 
     @OnClick(R.id.btnSubmit)

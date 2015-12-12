@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:text="Waiting for responses"
         android:textSize="30dp"
+        android:textAlignment="center"
         android:layout_marginBottom="50dp"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/tvResponses"/>
@@ -23,6 +24,7 @@
         android:id="@+id/tvResponses"
         android:text="@string/x_out_of_y_commited"
         android:textSize="30dp"
+        android:textAlignment="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
