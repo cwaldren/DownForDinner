@@ -33,6 +33,7 @@ public class DinnerRequestBroadcastReceiver extends BroadcastReceiver {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
                 break;
         }
 

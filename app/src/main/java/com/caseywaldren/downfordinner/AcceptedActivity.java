@@ -51,6 +51,9 @@ public class AcceptedActivity extends AppCompatActivity {
                 }
             }
         });
+
+        ParseUser.getCurrentUser().put("downForDinner", false);
+        ParseUser.getCurrentUser().saveInBackground();
     }
 
 
@@ -72,8 +75,7 @@ public class AcceptedActivity extends AppCompatActivity {
             }
         });
 
-        ParseUser.getCurrentUser().put("downForDinner", false);
-        ParseUser.getCurrentUser().saveInBackground();
+
         Intent beginIdleActivity = new Intent(this, IdleActivity.class);
         startActivity(beginIdleActivity);
         finish();

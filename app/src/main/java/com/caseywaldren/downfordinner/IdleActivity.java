@@ -1,6 +1,9 @@
 package com.caseywaldren.downfordinner;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
@@ -23,11 +26,25 @@ public class IdleActivity extends AppCompatActivity {
     @Bind(R.id.etMinPeople)
     EditText etMinPeople;
 
+    BroadcastReceiver receiver;
+    IntentFilter filter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_idle);
         ButterKnife.bind(this);
+
+        filter = new IntentFilter(DinnerPushBroadcastReceiver.ACTION_YES_DINNER);
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(DinnerPushBroadcastReceiver.ACTION_YES_DINNER)) {
+                    Intent wait = new Intent(IdleActivity.this, WaitActivity.class);
+                    startActivity(wait);
+                    finish();
+                }
+            }
+        };
         if (ParseUser.getCurrentUser().getBoolean("downForDinner")) {
             Intent wait = new Intent(this, WaitActivity.class);
             startActivity(wait);
@@ -55,5 +72,17 @@ public class IdleActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        registerReceiver(receiver, filter);
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
 
 }
