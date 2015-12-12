@@ -159,7 +159,7 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
         if (pushData.optString("chan").equals(ParseUtils.CHANNEL_DINNER_UPDATES)) {
             Log.i("PUSH_REC", "Got a dinner plan update");
             NotificationManager mgr = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            mgr.notify(random.nextInt(), getUpdateNotification(context, intent));
+            mgr.notify(45555332, getUpdateNotification(context, intent));
             return;
         }
 
@@ -167,7 +167,7 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
 
         String packageName = context.getPackageName();
 
-        int id = random.nextInt();
+        int id = 124151412;
         Intent yesIntent = new Intent(DinnerPushBroadcastReceiver.ACTION_YES_DINNER);
         yesIntent.putExtras(intent.getExtras());
         yesIntent.setPackage(packageName);
