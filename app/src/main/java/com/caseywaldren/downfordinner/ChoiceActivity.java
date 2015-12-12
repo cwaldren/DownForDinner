@@ -13,13 +13,12 @@ import com.caseywaldren.downfordinner.adapter.ChoiceRecyclerAdapter;
 public class ChoiceActivity extends RecyclerActivity {
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choice);
         setTitle("Choices: ");
+
 
         // First we have a filter which we use to update every object's vote count
         filter.addAction(ParseUtils.INTENT_UPDATE_VOTE_COUNT);
@@ -55,5 +54,9 @@ public class ChoiceActivity extends RecyclerActivity {
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
+    }
 }

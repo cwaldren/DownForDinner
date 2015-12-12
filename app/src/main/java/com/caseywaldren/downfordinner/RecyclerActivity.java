@@ -33,6 +33,7 @@ public class RecyclerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         filter = new IntentFilter();
         updateFilter = new IntentFilter(ParseUtils.INTENT_SUGGESTION_ADDED);
         updateReceiver = new BroadcastReceiver() {
@@ -45,6 +46,8 @@ public class RecyclerActivity extends AppCompatActivity {
                 }
             }
         };
+
+
     }
 
     protected void addInitialChoices() {

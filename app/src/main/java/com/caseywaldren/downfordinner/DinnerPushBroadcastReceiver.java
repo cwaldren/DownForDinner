@@ -147,11 +147,11 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
         }
         Random random = new Random();
 
-        if (pushData.optString("user").contentEquals(ParseUser.getCurrentUser().getUsername())) {
+        if (pushData.optString("user").equals(ParseUser.getCurrentUser().getUsername())) {
             Log.i("PUSH_REC", "Got a self push");
             return;
         }
-        if (pushData.optString("channel").contentEquals(ParseUtils.CHANNEL_DINNER_UPDATES)) {
+        if (pushData.optString("channel").equals(ParseUtils.CHANNEL_DINNER_UPDATES)) {
             Log.i("PUSH_REC", "Got a dinner plan update");
             NotificationManager mgr = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             mgr.notify(random.nextInt(), getUpdateNotification(context, intent));

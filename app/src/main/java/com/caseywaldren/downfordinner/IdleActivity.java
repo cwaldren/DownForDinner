@@ -28,7 +28,6 @@ public class IdleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_idle);
         ButterKnife.bind(this);
-
         if (ParseUser.getCurrentUser().getBoolean("downForDinner")) {
             Intent wait = new Intent(this, WaitActivity.class);
             startActivity(wait);
