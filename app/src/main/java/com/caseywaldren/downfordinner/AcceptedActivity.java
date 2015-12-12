@@ -1,5 +1,7 @@
 package com.caseywaldren.downfordinner;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -51,9 +54,13 @@ public class AcceptedActivity extends AppCompatActivity {
                 }
             }
         });
-
+        ParsePush.unsubscribeInBackground(ParseUtils.CHANNEL_DINNER_UPDATES);
         ParseUser.getCurrentUser().put("downForDinner", false);
         ParseUser.getCurrentUser().saveInBackground();
+
+        NotificationManager mgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mgr.cancel(45555332);
+
     }
 
 

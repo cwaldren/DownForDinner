@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DownForDinner</string>
+    <string name="app_name">Dinner</string>
     <string name="string_min_participants">Minimum number of participants</string>
     <string name="string_down_for_dinner">Down for Dinner!</string>
     <string name="string_ask_down_for_dinner">Ask if anyone is</string>

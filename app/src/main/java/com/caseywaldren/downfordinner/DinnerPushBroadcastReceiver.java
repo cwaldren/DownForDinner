@@ -213,6 +213,12 @@ public class DinnerPushBroadcastReceiver extends ParsePushBroadcastReceiver {
                         return TimeActivity.class;
                     case ParseUtils.INTENT_PLANS_CREATED:
                         return AcceptedActivity.class;
+                    case ParseUtils.INTENT_UPDATE_TIME_COUNT:
+                        return TimeActivity.class;
+                    case ParseUtils.INTENT_UPDATE_VOTE_COUNT:
+                        return ChoiceActivity.class;
+                    default:
+                        return null;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
