@@ -44,6 +44,8 @@ public class WaitActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         tvResponses.setText(String.format(getResources().getString(R.string.x_out_of_y_commited), 0, 2));
 
+        getSupportActionBar().hide();
+
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {

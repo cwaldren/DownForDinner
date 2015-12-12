@@ -193,5 +193,4 @@ public class ChoiceRecyclerAdapter extends RecyclerView.Adapter<ChoiceRecyclerAd
 
     }
 
-
 }
